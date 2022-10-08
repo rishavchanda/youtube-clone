@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
@@ -92,11 +93,12 @@ const Title = styled.h2`
 `;
 
 const Menu = ({ darkMode, setDarkMode }) => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <Container>
       <Link to="/" style={{ textDecoration: "none" }}>
         <Logo>
-          <Image src="https://raw.githubusercontent.com/safak/youtube2022/react-video-ui/src/img/logo.png"/>
+          <Image src="https://raw.githubusercontent.com/safak/youtube2022/react-video-ui/src/img/logo.png" />
           YouTube
         </Logo>
       </Link>
@@ -107,14 +109,21 @@ const Menu = ({ darkMode, setDarkMode }) => {
             Home
           </Item>
         </Link>
-        <Item>
-          <ExploreOutlinedIcon />
-          Explore
-        </Item>
-        <Item>
-          <SubscriptionsOutlinedIcon />
-          Subscriptions
-        </Item>
+        <Link to="trends" style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <ExploreOutlinedIcon />
+            Explore
+          </Item>
+        </Link>
+        <Link
+          to="subscriptions"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <SubscriptionsOutlinedIcon />
+            Subscriptions
+          </Item>
+        </Link>
         <Hr />
         <Item>
           <VideoLibraryOutlinedIcon />
@@ -125,20 +134,24 @@ const Menu = ({ darkMode, setDarkMode }) => {
           History
         </Item>
         <Hr />
-        <Login>
-          Sign in to like videos, comment, and subscribe.
-          <Link
-            to="/signin"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Button>
-              {" "}
-              <AccountCircleOutlinedIcon />
-              SIGN IN
-            </Button>
-          </Link>
-        </Login>
+        {!currentUser && (
+          <>
+          <Login>
+            Sign in to like videos, comment, and subscribe.
+            <Link
+              to="/signin"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Button>
+                {" "}
+                <AccountCircleOutlinedIcon />
+                SIGN IN
+              </Button>
+            </Link>
+          </Login>
         <Hr />
+        </>
+        )}
         <Title>BEST OF YOUTUBE</Title>
         <Item>
           <LibraryMusicOutlinedIcon />
